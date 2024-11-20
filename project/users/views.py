@@ -1,13 +1,11 @@
-from rest_framework import viewsets
 from .models import Link
 from .serializers import LinkSerializer
-from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
-from .models import Link
-from .serializers import LinkSerializer
-from rest_framework.permissions import IsAuthenticated
 import requests
 from bs4 import BeautifulSoup
+from rest_framework import viewsets
+from .models import Collection
+from .serializers import CollectionSerializer
+from rest_framework.permissions import IsAuthenticated
 
 class LinkViewSet(viewsets.ModelViewSet):
     queryset = Link.objects.all()
@@ -36,4 +34,13 @@ class LinkViewSet(viewsets.ModelViewSet):
         return title_content, description_content, image_content, link_type_content
 
 
+
+
+class CollectionViewSet(viewsets.ModelViewSet):
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
