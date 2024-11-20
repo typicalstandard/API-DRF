@@ -1,4 +1,3 @@
-# users/views.py
 from rest_framework import generics
 from django.contrib.auth import get_user_model
 from .serializers import RegisterSerializer
