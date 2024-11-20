@@ -31,10 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
-    'rest_framework_simplejwt',
-    'djoser',
-    'rest_framework_simplejwt.token_blacklist',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,6 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'users.apps.UsersConfig',
+    'rest_framework',
+    'djoser',
+    'rest_framework_simplejwt.token_blacklist',
 
 ]
 
@@ -77,10 +76,6 @@ TEMPLATES = [
         },
     },
 ]
-
-# Настройки статических файлов
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 WSGI_APPLICATION = 'project.wsgi.application'
@@ -140,18 +135,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
     ),
-    'DEFAULT_PERMISSION_CLASSES':
-        ( 'rest_framework.permissions.IsAuthenticated', ),
 }
 
 from datetime import timedelta
@@ -161,6 +156,29 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUDIENCE': None,
+    'ISSUER': None,
+
+    'AUTH_HEADER_TYPES': ('JWT',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'JTI_CLAIM': 'jti',
+
+    'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
+    'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
+    'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-DJOSER = { 'USER_ID_FIELD': 'id', 'LOGIN_FIELD': 'email',}
+DJOSER = {
+    'LOGIN_FIELD': 'username',
+    'SERIALIZERS': {
+        'user_create': 'djoser.serializers.UserCreateSerializer',
+        'user': 'djoser.serializers.UserSerializer',
+    },
+}
