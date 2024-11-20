@@ -22,23 +22,16 @@ class CustomUser(AbstractUser):
 
 
 
-class Link(models.Model):
-    LINK_TYPES = [
-        ('website', 'Website'),
-        ('book', 'Book'),
-        ('article', 'Article'),
-        ('music', 'Music'),
-        ('video', 'Video'),
-    ]
 
-    title = models.CharField(max_length=255)
+class Link(models.Model):
+    url = models.URLField(unique=True)
+    title = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
-    url = models.URLField()
-    image = models.URLField(blank=True)  # Ссылка на изображение (например, og:image)
-    link_type = models.CharField(max_length=20, choices=LINK_TYPES, default='website')
+    image = models.URLField(blank=True)
+    link_type = models.CharField(max_length=50, choices=(('website', 'Website'), ('book', 'Book'), ('article', 'Article'), ('music', 'Music'), ('video', 'Video')), default='website')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='links')
 
     def __str__(self):
-        return self.title
+        return self.title or self.url
