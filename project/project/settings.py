@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'rest_framework_simplejwt.token_blacklist',
+    'drf_yasg',
 
 ]
 
@@ -176,7 +177,7 @@ SIMPLE_JWT = {
 }
 
 DJOSER = {
-    'LOGIN_FIELD': 'username',
+    'LOGIN_FIELD': 'email',
     'SERIALIZERS': {
         'user_create': 'djoser.serializers.UserCreateSerializer',
         'user': 'djoser.serializers.UserSerializer',
