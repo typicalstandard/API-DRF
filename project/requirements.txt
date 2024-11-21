@@ -1,0 +1,8 @@
+beautifulsoup4==4.12.3
+django-extensions==3.2.3
+django-filter==24.3
+djoser==2.3.1
+drf-yasg==1.21.8
+flask==3.1.0
+markdown==3.7
+pip-chill==1.0.3
