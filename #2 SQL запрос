@@ -2,5 +2,5 @@ SELECT User.id, User.username, COUNT(Link.id) as link_count
 FROM User 
 LEFT JOIN Link ON User.id = Link.user_id
 GROUP BY User.id, User.username
-ORDER BY link_count DESC, User.registration_date ASC
+ORDER BY link_count DESC, User.date_joined ASC
 LIMIT 10;
